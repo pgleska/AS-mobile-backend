@@ -8,7 +8,17 @@ services:
     volumes:
       - ./docker/as-mob-backend.jar:/opt/as-mob-backend.jar
     ports:
-      - 8077:8080
-      - 8019:8001
+      - "8077:8080"
+      - "8019:8001"
     environment:
       - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8001
+    networks:
+      as-mob:
+        ipv4_address: 192.168.23.23
+
+networks:
+  as-mob:
+    ipam:
+      config:
+        - subnet: 192.168.23.0/24
+    
