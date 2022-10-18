@@ -1,0 +1,17 @@
+api:
+  secret: SuperRandomSecret
+  
+users:
+  - login: einstein
+    password: testpassword
+    roles:
+      - admin
+      - user
+  - login: newton
+    password: testpassword
+    roles:
+      - user
+  - login: tesla
+    password: testpassword
+    roles:
+      - user

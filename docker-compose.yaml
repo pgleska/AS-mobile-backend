@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    build: ./docker
+    restart: always
+    hostname: as-mob-backend
+    container_name: as-mob-backend
+    volumes:
+      - ./docker/as-mob-backend.jar:/opt/as-mob-backend.jar
+    ports:
+      - 8077:8080
+      - 8019:8001
+    environment:
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8001
