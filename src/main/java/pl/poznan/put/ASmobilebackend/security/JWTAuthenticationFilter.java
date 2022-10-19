@@ -4,6 +4,8 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC256;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -24,14 +26,15 @@ import pl.poznan.put.ASmobilebackend.models.User;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
-	private final String secret;		
-	
+	private final String secret;			
 	private final AuthenticationManager authenticationManager;
+	private final Map<String, List<String>> usersRoles;
 	private User creds;
 	
-	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, String secret) {
+	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, String secret, Map<String, List<String>> usersRoles) {
 		this.authenticationManager = authenticationManager;
 		this.secret = secret;
+		this.usersRoles = usersRoles;
 	}
 	
 	@Override
@@ -60,8 +63,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
     	
+		String userName = ((org.springframework.security.core.userdetails.User)auth.getPrincipal()).getUsername();
+		
         String token = JWT.create()
-                .withSubject(((org.springframework.security.core.userdetails.User)auth.getPrincipal()).getUsername())
+                .withSubject(userName)
+                .withClaim("roles", usersRoles.get(userName).toString())
                 .sign(HMAC256(secret));
         
         String body = "{\"JWT\" : \""+ token + "\"}";

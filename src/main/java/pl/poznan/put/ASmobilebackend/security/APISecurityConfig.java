@@ -89,7 +89,7 @@ public class APISecurityConfig {
 			.antMatchers("/api/**")
 			.authenticated()
 			.and()
-			.addFilter(new JWTAuthenticationFilter(authenticationManager(http, userDetailsService(bCryptPasswordEncoder())), SECRET))
+			.addFilter(new JWTAuthenticationFilter(authenticationManager(http, userDetailsService(bCryptPasswordEncoder())), SECRET, usersRoles))
 			.addFilter(new JWTAuthorizationFilter(authenticationManager(http, userDetailsService(bCryptPasswordEncoder())), SECRET, usersRoles))
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
