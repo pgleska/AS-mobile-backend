@@ -79,8 +79,13 @@ public class MainController {
 	@PreAuthorize("hasAuthority('user')")
 	@GetMapping(value = "/allEndpoints", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Map<String, String>> allEndpoints() {
-		
-		return null;
+		List<Map<String, String>> result = new ArrayList<>();
+		result.add(Map.of("message", "/api/users/{login}"));
+		result.add(Map.of("message", "/api/users/admin"));
+		result.add(Map.of("message", "/api/users"));
+		result.add(Map.of("message", "/api/hidden"));
+		result.add(Map.of("message", "/api/allEndpoints"));
+		return result;
 	}
 	
 	@GetMapping(value = "/hidden", produces = MediaType.APPLICATION_JSON_VALUE)
